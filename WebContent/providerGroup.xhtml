@@ -1,0 +1,68 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" 
+"http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml"
+	xmlns:h="http://java.sun.com/jsf/html"
+	xmlns:p="http://primefaces.org/ui"
+	xmlns:f="http://java.sun.com/jsf/core"
+	xmlns:ui="http://java.sun.com/jsf/facelets"
+	xmlns:of="http://omnifaces.org/functions">
+
+<h:head>
+	<title>Provider Groups</title>
+</h:head>
+<h:body>
+	<h:form>
+		<f:metadata>
+			<f:viewParam name="providerGroupId"
+				value="#{providerGroupService.providerGroupId}" />
+		</f:metadata>
+		<h:outputText
+			value="ProviderGroup #{providerGroupService.providerGroup.name} #{providerGroupService.providerGroup.id}"></h:outputText>
+		<br />
+		<h:commandButton value="Save" action="#{providerGroupService.save}" />
+		<br />
+		<p:tabView style="font-size: 10px">
+			<p:tab title="providers">
+				<ui:repeat var="provider" value="#{of:setToList(providerGroupService.providerGroup.providers)}">
+					<h:link value="#{provider.name} #{provider.id}" outcome="provider">
+						<f:param name="providerId" value="#{provider.id}"
+							includeViewParams="true" />
+					</h:link>
+					<br />
+				</ui:repeat>
+			</p:tab>
+			<p:tab title="kinds">
+
+					<p:dataTable var="kind"
+						value="#{of:setToList(providerGroupService.providerGroup.kinds)}" style="width:400px">
+						<p:column headerText="Overriding kind" style="width:100px">
+							<h:outputText value="#{kind.overridingKind.visualizedName}" />
+						</p:column>
+
+						<p:column headerText="Kinds" style="width:100px">
+							<ui:repeat var="overridenKind" value="#{of:setToList(kind.overridenKinds)}">
+							<h:outputText value="#{overridenKind.visualizedName} " />
+							</ui:repeat>
+						</p:column>
+
+						<p:column headerText="Env" style="width:100px">
+							<h:outputText value="#{kind.envId}" />
+						</p:column>
+
+						<p:column headerText="Edit" style="width:100px">
+							<h:link value="#{kind.fullName}" outcome="kind">
+								<f:param name="kindId" value="#{kind.id}" includeViewParams="true" />
+							</h:link>
+						</p:column>
+					</p:dataTable>
+					<br/>
+					<h:outputText value="Currently on TA state #{providerGroupService.providerGroup.taState} " />
+					<h:commandButton rendered="#{providerGroupService.providerGroup.taState==2}" value="switch to TA state 1" action="#{providerGroupService.switchTaState1}" />
+					<h:commandButton rendered="#{providerGroupService.providerGroup.taState==1}" value="switch to TA state 2" action="#{providerGroupService.switchTaState2}" />
+			</p:tab>
+		</p:tabView>
+	</h:form>
+</h:body>
+
+</html>

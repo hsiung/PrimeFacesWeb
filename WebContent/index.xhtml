@@ -1,0 +1,30 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" 
+"http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml"
+	xmlns:h="http://java.sun.com/jsf/html"
+	xmlns:f="http://java.sun.com/jsf/core"
+	xmlns:ui="http://java.sun.com/jsf/facelets"
+	xmlns:of="http://omnifaces.org/functions">
+
+<h:head>
+	<title>Providers</title>
+</h:head>
+<h:body>
+	<h:form>
+		<h:outputText value="Provider Groups"></h:outputText>
+				
+		<h:commandButton value="Create ProviderGroup" action="#{providerGroupService.createProviderGroup}" />
+
+		<br/>
+		<ui:repeat var="providerGroup" value="#{providerGroupService.providerGroups}">
+			<h:link value="#{providerGroup.name} #{providerGroup.id}" outcome="providerGroup">
+				<f:param name="providerGroupId" value="#{providerGroup.id}" includeViewParams="true"/>
+			</h:link>
+			<br />
+		</ui:repeat>
+
+	</h:form>
+</h:body>
+
+</html>

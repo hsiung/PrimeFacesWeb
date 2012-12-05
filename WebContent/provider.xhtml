@@ -1,0 +1,64 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" 
+"http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml"
+	xmlns:h="http://java.sun.com/jsf/html"
+	xmlns:f="http://java.sun.com/jsf/core"
+	xmlns:p="http://primefaces.org/ui"
+	xmlns:c="http://java.sun.com/jstl/core"
+	xmlns:ui="http://java.sun.com/jsf/facelets"
+	xmlns:of="http://omnifaces.org/functions">
+<f:view contentType="text/html">
+	<h:head>
+		<title>Provider</title>
+	</h:head>
+	<h:body>
+		<h:form>
+			<f:metadata>
+				<f:viewParam name="providerId" value="#{providerService.providerId}" />
+			</f:metadata>
+			<h:outputText
+				value="Provider #{providerService.provider.name} #{providerService.provider.id}"></h:outputText>
+			<br />
+			<h:commandButton value="Save" action="#{providerService.save}" />
+			<h:commandButton value="Preview" action="#{providerService.provider.generateProviderUrlsToUpload}" />
+			<br />
+			<p:tabView var="envProvider"
+				value="#{of:setToList(providerService.provider.envProviders)}"
+				style="font-size: 10px">
+				<p:tab title="#{envProvider.name}">
+					<ui:repeat var="url"
+						value="#{of:setToList(envProvider.providerUrls)}">
+						<h:inputText value="#{url.name}" size="80" />
+						<br/><br/>
+					</ui:repeat>
+					<h:outputText value="Provider URLs to upload:" rendered="#{envProvider.providerUrlsToUpload != null}"/>
+					<br/><br/>
+					<ui:repeat var="url"
+						value="#{of:setToList(envProvider.providerUrlsToUpload)}">
+						<h:outputText value="#{url.name}" size="80" />
+						<br/>
+					</ui:repeat>
+				</p:tab>
+			</p:tabView>
+			<!--table>
+				<ui:repeat var="envProvider"
+					value="#{of:setToList(providerService.provider.envProviders)}">
+					<tr>
+						<td><h:outputText value="#{envProvider.name}" />
+							<table>
+								<ui:repeat var="url"
+									value="#{of:setToList(envProvider.providerUrls)}">
+									<tr>
+										<td><h:inputText value="#{url.name}" size="80" /></td>
+									</tr>
+								</ui:repeat>
+							</table></td>
+					</tr>
+				</ui:repeat>
+			</table-->
+
+		</h:form>
+	</h:body>
+</f:view>
+</html>
